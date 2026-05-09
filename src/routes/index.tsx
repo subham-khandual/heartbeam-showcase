@@ -40,7 +40,7 @@ function Index() {
             viewport={{ once: true, margin: "-100px" }}
             className="mb-12 text-center"
           >
-            <p className="mb-3 text-xs uppercase tracking-[0.4em] text-primary">Gallery</p>
+            <p className="mb-3 text-xs uppercase tracking-[0.4em] text-primary">Tiny Moments, Forever Memories</p>
             <h2 className="text-gradient text-5xl font-light sm:text-6xl">A Universe of Smiles</h2>
             <p className="mx-auto mt-4 max-w-md text-sm text-muted-foreground">
               Hover to pause · Click any photo for a closer look

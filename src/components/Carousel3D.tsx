@@ -5,8 +5,11 @@ import baby3 from "@/assets/baby3.jpg";
 import baby4 from "@/assets/baby4.jpg";
 import baby5 from "@/assets/baby5.jpg";
 import baby6 from "@/assets/baby6.jpg";
+import baby7 from "@/assets/baby7.jpg";
+import baby8 from "@/assets/baby8.jpg";
+import baby9 from "@/assets/baby9.jpg";
 
-const images = [baby1, baby2, baby3, baby4, baby5, baby6];
+const images = [baby1, baby2, baby3, baby4, baby5, baby6, baby7, baby8, baby9];
 
 type Props = { onSelect: (src: string) => void };
 

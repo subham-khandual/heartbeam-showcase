@@ -20,8 +20,8 @@ export function Contact() {
             <a href="mailto:hello@littlestar.love" className="glass flex items-center gap-2 rounded-full px-6 py-3 text-sm transition hover:scale-105 hover:text-primary">
               <Mail className="h-4 w-4" /> hello@littlestar.love
             </a>
-            <a href="#" className="glass flex items-center gap-2 rounded-full px-6 py-3 text-sm transition hover:scale-105 hover:text-primary">
-              <Instagram className="h-4 w-4" /> @little.star
+            <a href="https://www.instagram.com/mr_subham7.0?igsh=MTFud3JibGhqbGw4bQ==" target="_blank" rel="noopener noreferrer" className="glass flex items-center gap-2 rounded-full px-6 py-3 text-sm transition hover:scale-105 hover:text-primary">
+              <Instagram className="h-4 w-4" /> @littleboy
             </a>
           </div>
         </motion.div>

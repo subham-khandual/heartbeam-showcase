@@ -1,8 +1,25 @@
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
+import { Music, Music2 } from "lucide-react";
+import bgMusic from "@/assets/bg-music.mp3";
 
 export function Hero() {
   const [mouse, setMouse] = useState({ x: 0, y: 0 });
+  const [music, setMusic] = useState(false);
+  const [audio] = useState(() => {
+    if (typeof window === "undefined") return null;
+    const a = new Audio(bgMusic);
+    a.loop = true;
+    a.volume = 0.35;
+    return a;
+  });
+
+  const toggle = () => {
+    if (!audio) return;
+    if (music) audio.pause();
+    else audio.play().catch(() => {});
+    setMusic(!music);
+  };
   useEffect(() => {
     const onMove = (e: MouseEvent) => {
       setMouse({
@@ -68,6 +85,14 @@ export function Hero() {
           >
             Our Memories →
           </a>
+          <button
+            onClick={toggle}
+            aria-label="Toggle music"
+            className="rounded-full border border-border px-7 py-3 text-sm tracking-wide text-foreground/80 transition hover:border-primary hover:text-foreground flex items-center gap-2"
+          >
+            {music ? <Music2 className="h-4 w-4" /> : <Music className="h-4 w-4" />}
+            {music ? "Pause Music" : "Play Music"}
+          </button>
         </motion.div>
       </div>
       <motion.div

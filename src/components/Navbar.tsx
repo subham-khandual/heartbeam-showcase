@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
 import { Music, Music2, Sparkles } from "lucide-react";
 import { useState } from "react";
+import bgMusic from "@/assets/bg-music.mp3";
+
 
 const links = [
   { href: "#home", label: "Home" },
@@ -13,7 +15,7 @@ export function Navbar() {
   const [music, setMusic] = useState(false);
   const [audio] = useState(() => {
     if (typeof window === "undefined") return null;
-    const a = new Audio("https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lullaby-110023.mp3");
+    const a = new Audio(bgMusic);
     a.loop = true;
     a.volume = 0.35;
     return a;
@@ -48,6 +50,7 @@ export function Navbar() {
             </li>
           ))}
         </ul>
+
         <button
           onClick={toggle}
           aria-label="Toggle music"

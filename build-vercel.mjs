@@ -1,12 +1,12 @@
 // build-vercel.mjs
 // Custom build script that:
-// 1. Runs `vite build` (produces dist/client + dist/server for Cloudflare worker format)
+// 1. Runs `vite build` (produces dist/client + dist/server)
 // 2. Copies output into .vercel/output following the Vercel Build Output API
-//    so that static assets are served directly and a serverless edge function
+//    so that static assets are served directly and a Node.js serverless function
 //    handles SSR.
 
 import { execSync } from "node:child_process";
-import { cpSync, mkdirSync, writeFileSync, readdirSync, existsSync } from "node:fs";
+import { cpSync, mkdirSync, writeFileSync, existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
 const ROOT = process.cwd();
@@ -33,7 +33,7 @@ writeFileSync(
   JSON.stringify({ version: 3, routes: [
     // Serve static assets from dist/client
     { handle: "filesystem" },
-    // Everything else goes to the edge function
+    // Everything else goes to the serverless function
     { src: "/(.*)", dest: "/ssr" },
   ]}, null, 2)
 );
@@ -43,7 +43,7 @@ const staticDir = join(OUT, "static");
 mkdirSync(staticDir, { recursive: true });
 cpSync(join(ROOT, "dist", "client"), staticDir, { recursive: true });
 
-// Step 4: Create an edge function that wraps the Cloudflare-format server
+// Step 4: Create a Node.js serverless function (NOT edge) that wraps the server
 const fnDir = join(OUT, "functions", "ssr.func");
 mkdirSync(fnDir, { recursive: true });
 
@@ -53,33 +53,89 @@ cpSync(join(ROOT, "dist", "server"), join(fnDir, "server"), { recursive: true })
 // Also copy client assets into function dir so SSR can inline references
 cpSync(join(ROOT, "dist", "client"), join(fnDir, "client"), { recursive: true });
 
-// Function config
+// Function config — using Node.js runtime (NOT edge) to support all npm modules
 writeFileSync(
   join(fnDir, ".vc-config.json"),
   JSON.stringify({
-    runtime: "edge",
-    entrypoint: "index.js",
+    runtime: "nodejs22.x",
+    handler: "index.mjs",
+    launcherType: "Nodejs",
   }, null, 2)
 );
 
-// Edge function entry point — adapts Cloudflare worker format to Vercel edge
+// Copy over package.json so the function can resolve dependencies
+const pkgJson = JSON.parse(readFileSync(join(ROOT, "package.json"), "utf-8"));
 writeFileSync(
-  join(fnDir, "index.js"),
+  join(fnDir, "package.json"),
+  JSON.stringify({
+    type: "module",
+    dependencies: pkgJson.dependencies,
+  }, null, 2)
+);
+
+// Node.js serverless function entry point
+writeFileSync(
+  join(fnDir, "index.mjs"),
   `
 import handler from "./server/server.js";
 
-export default async function (request, context) {
+export default async function (req, res) {
   try {
-    const response = await handler.fetch(request, {}, context);
-    return response;
+    // Convert Node.js IncomingMessage to a web Request
+    const protocol = req.headers["x-forwarded-proto"] || "https";
+    const host = req.headers["x-forwarded-host"] || req.headers.host || "localhost";
+    const url = new URL(req.url, \`\${protocol}://\${host}\`);
+
+    const headers = new Headers();
+    for (const [key, value] of Object.entries(req.headers)) {
+      if (value) headers.set(key, Array.isArray(value) ? value.join(", ") : value);
+    }
+
+    const hasBody = req.method !== "GET" && req.method !== "HEAD";
+    let body = null;
+    if (hasBody) {
+      const chunks = [];
+      for await (const chunk of req) {
+        chunks.push(chunk);
+      }
+      body = Buffer.concat(chunks);
+    }
+
+    const request = new Request(url.toString(), {
+      method: req.method,
+      headers,
+      body,
+      duplex: hasBody ? "half" : undefined,
+    });
+
+    // Call the SSR handler (Cloudflare worker-style fetch)
+    const response = await handler.fetch(request, {}, {});
+
+    // Convert web Response back to Node.js ServerResponse
+    res.statusCode = response.status;
+    response.headers.forEach((value, key) => {
+      res.setHeader(key, value);
+    });
+
+    if (response.body) {
+      const reader = response.body.getReader();
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        res.write(value);
+      }
+    }
+    res.end();
   } catch (e) {
     console.error("SSR Error:", e);
-    return new Response("Internal Server Error", { status: 500 });
+    res.statusCode = 500;
+    res.setHeader("content-type", "text/html; charset=utf-8");
+    res.end("<h1>Internal Server Error</h1>");
   }
 }
-
-export const config = { runtime: "edge" };
 `
 );
 
 console.log("✅ Vercel Build Output API structure created at .vercel/output");
+console.log("   - Static assets: .vercel/output/static");
+console.log("   - SSR function:  .vercel/output/functions/ssr.func (Node.js runtime)");

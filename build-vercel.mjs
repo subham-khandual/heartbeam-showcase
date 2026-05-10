@@ -81,7 +81,6 @@ import handler from "./server/server.js";
 
 export default async function (req, res) {
   try {
-    // Convert Node.js IncomingMessage to a web Request
     const protocol = req.headers["x-forwarded-proto"] || "https";
     const host = req.headers["x-forwarded-host"] || req.headers.host || "localhost";
     const url = new URL(req.url, \`\${protocol}://\${host}\`);
@@ -108,10 +107,8 @@ export default async function (req, res) {
       duplex: hasBody ? "half" : undefined,
     });
 
-    // Call the SSR handler (Cloudflare worker-style fetch)
     const response = await handler.fetch(request, {}, {});
 
-    // Convert web Response back to Node.js ServerResponse
     res.statusCode = response.status;
     response.headers.forEach((value, key) => {
       res.setHeader(key, value);
@@ -130,7 +127,14 @@ export default async function (req, res) {
     console.error("SSR Error:", e);
     res.statusCode = 500;
     res.setHeader("content-type", "text/html; charset=utf-8");
-    res.end("<h1>Internal Server Error</h1>");
+    res.end(\`
+      <div style="padding: 20px; font-family: sans-serif;">
+        <h1 style="color: #e11d48;">Deployment SSR Error</h1>
+        <p>The server encountered an error while rendering this page.</p>
+        <pre style="background: #f4f4f5; padding: 15px; border-radius: 8px; overflow: auto; border: 1px solid #e4e4e7;">\${e.stack || e.message}</pre>
+        <p style="color: #71717a; font-size: 14px;">Check Vercel logs for more details.</p>
+      </div>
+    \`);
   }
 }
 `

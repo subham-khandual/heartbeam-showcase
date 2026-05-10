@@ -65,13 +65,19 @@ writeFileSync(
 
 // Copy over package.json so the function can resolve dependencies
 const pkgJson = JSON.parse(readFileSync(join(ROOT, "package.json"), "utf-8"));
+// Only include necessary dependencies for the function
+const functionPkg = {
+  type: "module",
+  dependencies: pkgJson.dependencies,
+};
 writeFileSync(
   join(fnDir, "package.json"),
-  JSON.stringify({
-    type: "module",
-    dependencies: pkgJson.dependencies,
-  }, null, 2)
+  JSON.stringify(functionPkg, null, 2)
 );
+
+// Install dependencies in the function folder so they are bundled by Vercel
+console.log("▶ Installing production dependencies for SSR function...");
+execSync("npm install --production", { stdio: "inherit", cwd: fnDir });
 
 // Node.js serverless function entry point
 writeFileSync(

@@ -98,7 +98,7 @@ Git
 
 1. **Clone the repository**
 ```bash
-git clone https://github.com/SubhamKhandual007/heartbeam-showcase.git
+git clone https://github.com/subham-khandual/heartbeam-showcase.git
 cd heartbeam-showcase
 ```
 
@@ -109,9 +109,12 @@ npm install
 yarn install
 ```
 
-3. **Create environment file** (if needed)
+3. **Environment Setup**
 ```bash
+# Copy example env file
 cp .env.example .env.local
+
+# Update .env.local with your configuration
 ```
 
 4. **Run development server**
@@ -128,315 +131,13 @@ http://localhost:3000
 
 ---
 
-## 📁 Project Structure
-
-```
-heartbeam-showcase/
-│
-├── public/                    # Static assets
-│   ├── images/               # Image files
-│   ├── icons/                # Icon files
-│   └── favicon.ico           # Favicon
-│
-├── src/
-│   ├── app/                  # Next.js app directory
-│   │   ├── layout.tsx        # Root layout
-│   │   ├── page.tsx          # Home page
-│   │   └── globals.css       # Global styles
-│   │
-│   ├── components/           # Reusable components
-│   │   ├── Header.tsx        # Header component
-│   │   ├── Hero.tsx          # Hero section
-│   │   ├── Features.tsx      # Features section
-│   │   ├── CTA.tsx           # Call-to-action
-│   │   └── Footer.tsx        # Footer component
-│   │
-│   ├── styles/               # CSS modules
-│   │   ├── components.module.css
-│   │   └── animations.css
-│   │
-│   └── types/                # TypeScript types
-│       └── index.ts          # Type definitions
-│
-├── .env.example              # Environment variables template
-├── .eslintrc.json           # ESLint configuration
-├── .gitignore               # Git ignore rules
-├── next.config.js           # Next.js configuration
-├── tailwind.config.js        # Tailwind CSS config
-├── tsconfig.json            # TypeScript configuration
-├── package.json             # Project metadata
-└── README.md                # This file
-```
-
----
-
-## 🧠 Technologies Used
-
-### Frontend Framework
-![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white) - React framework for production
-
-### Language & Types
-![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white) - Type-safe JavaScript
-
-### Styling
-![Tailwind CSS](https://img.shields.io/badge/TailwindCSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white) - Utility-first CSS framework
-![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white) - Custom styling
-
-### UI Components
-![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB) - Component library
-
-### Development Tools
-![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white)
-![ESLint](https://img.shields.io/badge/ESLint-4B32C3?style=for-the-badge&logo=eslint&logoColor=white)
-![Prettier](https://img.shields.io/badge/Prettier-F7B93E?style=for-the-badge&logo=prettier&logoColor=white)
-
-### Deployment
-![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white) - Hosting & deployment
-
----
-
-## 🚀 Development
-
-### Available Scripts
-
-**Development server**
-```bash
-npm run dev
-```
-
-**Production build**
-```bash
-npm run build
-npm run start
-```
-
-**Linting & formatting**
-```bash
-npm run lint
-npm run format
-```
-
-**Type checking**
-```bash
-npm run type-check
-```
-
----
-
-## 📊 Component Overview
-
-### Header Component
-- Navigation menu
-- Logo/branding
-- Responsive hamburger menu (mobile)
-- Theme toggle
-
-### Hero Section
-- Eye-catching headline
-- Subheadline with value proposition
-- Call-to-action button
-- Hero image/video
-
-### Features Section
-- Feature cards with icons
-- Description text
-- Visual elements
-- Grid layout (responsive)
-
-### CTA Section
-- Promotional message
-- Primary action button
-- Secondary links
-
-### Footer Component
-- Company information
-- Quick links
-- Social media links
-- Copyright notice
-
----
-
-## 🎨 Customization
-
-### Colors & Branding
-Edit `tailwind.config.js` to customize:
-```javascript
-theme: {
-  colors: {
-    primary: '#your-color',
-    secondary: '#your-color',
-  }
-}
-```
-
-### Content
-Update content in component files:
-```typescript
-// src/components/Hero.tsx
-const heroContent = {
-  title: "Your title here",
-  subtitle: "Your subtitle here"
-}
-```
-
-### Images
-Replace images in `public/images/` directory
-
----
-
-## 🚀 Deployment
-
-### Deploy to Vercel (Recommended)
-
-1. **Push to GitHub**
-```bash
-git push origin main
-```
-
-2. **Connect to Vercel**
-- Go to [vercel.com](https://vercel.com)
-- Import your GitHub repository
-- Configure environment variables
-- Deploy!
-
-3. **Custom Domain**
-- Add domain in Vercel dashboard
-- Update DNS records
-- Enable HTTPS
-
-### Deploy to Other Platforms
-
-**Netlify:**
-```bash
-npm run build
-netlify deploy --prod --dir=.next
-```
-
-**Docker:**
-```bash
-docker build -t heartbeam-showcase .
-docker run -p 3000:3000 heartbeam-showcase
-```
-
----
-
-## 🔍 Performance Optimization
-
-### Image Optimization
-- Using Next.js `<Image>` component
-- Automatic WebP conversion
-- Lazy loading enabled
-
-### Code Splitting
-- Dynamic imports for components
-- Route-based code splitting
-- Optimized bundle size
-
-### SEO
-- Meta tags in layout
-- Open Graph support
-- Sitemap generation
-- Robots.txt configuration
-
----
-
-## 🔐 Security Best Practices
-
-- ✅ Content Security Policy headers
-- ✅ CORS properly configured
-- ✅ Input sanitization
-- ✅ Environment variables protected
-- ✅ Regular dependency updates
-
----
-
-## 📱 Browser Support
-
-- Chrome (latest)
-- Firefox (latest)
-- Safari (latest)
-- Edge (latest)
-- Mobile browsers
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome! Follow these steps:
-
-1. **Fork the repository**
-```bash
-git clone https://github.com/yourusername/heartbeam-showcase.git
-```
-
-2. **Create feature branch**
-```bash
-git checkout -b feature/your-feature-name
-```
-
-3. **Make changes**
-- Follow existing code style
-- Write meaningful commit messages
-- Keep changes focused
-
-4. **Commit & Push**
-```bash
-git commit -m "Add: your feature description"
-git push origin feature/your-feature-name
-```
-
-5. **Open Pull Request**
-- Describe your changes
-- Link related issues
-- Request review
-
----
-
-## 🐛 Troubleshooting
-
-### Port Already in Use
-```bash
-# On macOS/Linux
-lsof -i :3000
-kill -9 <PID>
-
-# On Windows
-netstat -ano | findstr :3000
-taskkill /PID <PID> /F
-```
-
-### Build Issues
-```bash
-# Clear cache and reinstall
-rm -rf node_modules .next
-npm install
-npm run build
-```
-
-### Environment Variables
-- Ensure `.env.local` file exists
-- Restart dev server after changes
-- Check Vercel dashboard for production env vars
-
----
-
-## 📚 Resources
-
-- [Next.js Documentation](https://nextjs.org/docs)
-- [TypeScript Handbook](https://www.typescriptlang.org/docs/)
-- [Tailwind CSS Docs](https://tailwindcss.com/docs)
-- [React Documentation](https://react.dev)
-- [Vercel Deployment Guide](https://vercel.com/docs)
-
----
-
 ## 🎓 Author
 
 **Subham Khandual**
 
 B.Tech Computer Science Student | Full Stack Developer | AI/ML Enthusiast
 
-- 🔗 [GitHub](https://github.com/SubhamKhandual007)
+- 🔗 [GitHub](https://github.com/subham-khandual)
 - 💼 [LinkedIn](https://www.linkedin.com/in/subham-khandual)
 - 📧 [Email](mailto:subhamkhandual215@gmail.com)
 - 🌐 [Portfolio](https://portfolio-nine-alpha-8nkzp7nnk6.vercel.app)
@@ -460,19 +161,11 @@ If you find this project helpful:
 
 ---
 
-## 🙏 Acknowledgments
-
-- Built with ❤️ using Next.js
-- Inspired by modern web design trends
-- Thanks to the open-source community
-
----
-
 <div align="center">
 
 ### 🚀 Ready to showcase your ideas?
 
-[View Live Demo](https://heartbeam-showcase.vercel.app) • [Report Bug](https://github.com/SubhamKhandual007/heartbeam-showcase/issues) • [Request Feature](https://github.com/SubhamKhandual007/heartbeam-showcase/issues)
+[View Live Demo](https://heartbeam-showcase.vercel.app) • [Report Bug](https://github.com/subham-khandual/heartbeam-showcase/issues) • [Request Feature](https://github.com/subham-khandual/heartbeam-showcase/issues)
 
 **Made with ❤️ by Subham Khandual**
 
